@@ -8,7 +8,7 @@ Amplify.configure(awsExports);
 
 export default function App() {
   return (
-    <Authenticator loginMechanisms={['email']} >
+    <Authenticator loginMechanisms={['email']}>
       {({ signOut, user }) => (
         <main>
           <h1>Hello {user?.username}</h1>
@@ -18,4 +18,3 @@ export default function App() {
     </Authenticator>
   );
 }
-
