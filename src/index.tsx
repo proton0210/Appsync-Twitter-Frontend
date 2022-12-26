@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 
-import { Auth, Amplify } from 'aws-amplify';
+import { Amplify } from 'aws-amplify';
 import awsExports from './aws-config';
+import { BrowserRouter as Router } from 'react-router-dom';
 Amplify.configure(awsExports);
 
 const root = ReactDOM.createRoot(
@@ -12,6 +13,10 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <App />
+      </React.Suspense>
+    </Router>
   </React.StrictMode>
 );
