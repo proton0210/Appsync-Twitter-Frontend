@@ -1,25 +1,21 @@
-import { useRoutes } from 'react-router-dom';
 import Login from '../pages/Login';
 import Root from '../pages/Root';
 import Home from '../pages/Home';
-
-const routes = [
+import { Navigate } from 'react-router-dom';
+import React from 'react';
+const routes = (isLoggedIn: boolean) => [
   {
     path: '/',
     element: <Root />
   },
   {
     path: '/home',
-    element: <Home />
+    element: isLoggedIn ? <Home /> : <Navigate to="/login" />
   },
   {
     path: '/login',
     element: <Login />
-    // protected route
   }
 ];
 
-export const Routes = () => {
-  const routing = useRoutes(routes);
-  return routing;
-};
+export default routes;

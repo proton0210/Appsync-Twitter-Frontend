@@ -1,18 +1,8 @@
 import React, { useContext } from 'react';
-import { Authenticator } from '@aws-amplify/ui-react';
+import SignUpForm from '../components/SignUpForm';
+import signIn from '../server-utils/SignIn';
 const Root = () => {
-  return (
-    <Authenticator loginMechanisms={['email']}>
-      {({ signOut, user }) => (
-        <>
-          <main>
-            <h1>Hello {user?.username}</h1>
-            <button onClick={signOut}>Sign out</button>
-          </main>
-        </>
-      )}
-    </Authenticator>
-  );
+  return <SignUpForm />;
 };
 
 export default Root;
