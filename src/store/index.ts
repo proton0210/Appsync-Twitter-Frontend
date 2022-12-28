@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { login, logout } from './slices/AuthSlice';
+import { login, logout, setSignUpStep } from './slices/AuthSlice';
 import AuthSlice from './slices/AuthSlice';
 
 const store = configureStore({
@@ -8,4 +8,4 @@ const store = configureStore({
   }
 });
 
-export { login, logout, store };
+export { login, logout, setSignUpStep, store };

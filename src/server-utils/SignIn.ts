@@ -1,6 +1,6 @@
 import { Auth } from 'aws-amplify';
 
-export default async function signIn(email: string, password: string) {
+export default async function SignIn(email: string, password: string) {
   let user;
   try {
     user = await Auth.signIn(email, password);
