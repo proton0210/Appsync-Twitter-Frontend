@@ -36,8 +36,6 @@ export default function SignUpModal({ onSignUpClose }: Props) {
     }
   };
 
-
-
   return (
     <>
       <div className="fixed w-full h-full top-0 left-0 flex items-center justify-center ">
@@ -56,6 +54,7 @@ export default function SignUpModal({ onSignUpClose }: Props) {
                       ? 'opacity-50 cursor-not-allowed'
                       : 'opacity-100 cursor-pointer'
                   }`}
+                  disabled={!name || !email || !birthdate}
                   onClick={() => dispatch(setSignUpStep(2))}
                 >
                   Next
