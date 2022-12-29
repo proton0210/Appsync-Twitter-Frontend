@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router';
 import { SocialIcon } from 'react-social-icons';
 import SignUpModal from '../components/SignUpModal';
-import SignUpForm from '../components/SignUpModal';
 import { useDispatch } from 'react-redux';
 import { setSignUpStep } from '../store';
 const Root = () => {
@@ -85,7 +84,7 @@ const Root = () => {
         </div>
       </div>
       <div className="flex w-1/2 h-full bg-white">
-        
+
         <div className="flex w-1/2 h-full mx-auto">
           <div className="flex flex-col w-1/2 font-bold justify-center">
             <SocialIcon network="twitter" />
