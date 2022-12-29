@@ -85,6 +85,7 @@ const Root = () => {
         </div>
       </div>
       <div className="flex w-1/2 h-full bg-white">
+        
         <div className="flex w-1/2 h-full mx-auto">
           <div className="flex flex-col w-1/2 font-bold justify-center">
             <SocialIcon network="twitter" />
