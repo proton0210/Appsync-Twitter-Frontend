@@ -14,6 +14,7 @@ const AuthSlice = createSlice({
     },
     logout: (state) => {
       state.loggedIn = false;
+      state.user = null;
     },
     setSignUpStep: (state, action) => {
       state.signUpStep = action.payload;
