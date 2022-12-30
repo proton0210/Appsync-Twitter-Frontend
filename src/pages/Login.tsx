@@ -3,7 +3,8 @@ import { SocialIcon } from 'react-social-icons';
 import { Auth } from 'aws-amplify';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { login, logout } from '../store';
+import { login, logout, setTwitterProfile } from '../store';
+import { getMyProfile } from '../lib/backend';
 
 const Login = () => {
   const [email, setEmail] = React.useState('');
@@ -23,7 +24,8 @@ const Login = () => {
     try {
       const user = await Auth.signIn(email, password);
       console.log(user);
-      dispatch(login(user));
+      dispatch(login(user));    
+      dispatch(setTwitterProfile(await getMyProfile()));
       navigate('/home');
     } catch (error: any) {
       dispatch(logout());
