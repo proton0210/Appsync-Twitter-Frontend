@@ -4,8 +4,13 @@ import { SocialIcon } from 'react-social-icons';
 import SignUpModal from '../components/SignUpModal';
 import { useDispatch } from 'react-redux';
 import { setSignUpStep } from '../store';
+import { useSelector } from 'react-redux';
+import { Auth } from 'aws-amplify';
 const Root = () => {
   const [showSignUpModal, setShowSignUpModal] = React.useState(false);
+
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const onSignUpClick = () => {
     setShowSignUpModal(true);
@@ -15,7 +20,9 @@ const Root = () => {
     setShowSignUpModal(false);
     dispatch(setSignUpStep(0));
   };
-  const navigate = useNavigate();
+
+ 
+
   return (
     <div className="flex w-full h-screen">
       {/* Left Side */}
@@ -84,7 +91,6 @@ const Root = () => {
         </div>
       </div>
       <div className="flex w-1/2 h-full bg-white">
-
         <div className="flex w-1/2 h-full mx-auto">
           <div className="flex flex-col w-1/2 font-bold justify-center">
             <SocialIcon network="twitter" />

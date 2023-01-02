@@ -14,6 +14,25 @@ import {
   faAngleDown
 } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout, clearTwitterProfile } from '../store';
+import { Auth } from 'aws-amplify';
+type TwitterProfile = {
+  id?: string;
+  name?: string;
+  screenName?: string;
+  imageUrl?: string;
+  backgroundImageUrl?: string;
+  bio?: string;
+  location?: string;
+  website?: string;
+  birthdate?: string;
+  createdAt?: string;
+  followersCount?: string;
+  followingCount?: string;
+  tweetsCount?: string;
+  likesCounts?: string;
+};
 
 const tabs = [
   {
@@ -55,10 +74,21 @@ const tabs = [
   },
   { icon: <FontAwesomeIcon icon={faEllipsisH} />, title: 'More', id: 'more' }
 ];
-function SideNav() {
+function SideNav({ name, screenName, imageUrl }: TwitterProfile) {
   let navigate = useNavigate();
   const [dropDown, setDropDown] = React.useState(false);
 
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    try {
+      Auth.signOut();
+      dispatch(logout());
+      dispatch(clearTwitterProfile());
+      navigate('/');
+    } catch (error) {
+      console.log('error signing out: ', (error as Error).message);
+    }
+  };
   return (
     <div className="lg:w-1/5 border-r border-lighter px-2 lg:px-6 py-2 flex flex-col justify-between min-w-max">
       <div>
@@ -95,15 +125,15 @@ function SideNav() {
           className="flex items-center w-full hover:bg-lightblue rounded-full p-2"
         >
           <img
-            src={require('../assets/default.png')}
+            src={imageUrl ? imageUrl : require('../assets/default.png')}
             className="w-10 h-10 rounded-full"
           />
           <div className="hidden lg:block ml-4 truncate">
             <div className="text-left text-sm font-bold leading-tight truncate">
-              User
+              {name ? name : 'User'}
             </div>
             <div className="text-left text-sm leading-tight text-dark truncate">
-              ScreenName
+              {screenName ? screenName : 'ScreenName'}
             </div>
           </div>
           <FontAwesomeIcon
@@ -118,15 +148,15 @@ function SideNav() {
               className="p-3 flex items-center w-full hover:bg-lightest"
             >
               <img
-                src={require('../assets/default.png')}
+                src={imageUrl ? imageUrl : require('../assets/default.png')}
                 className="w-10 h-10 rounded-full"
               />
               <div className="ml-4">
                 <p className="text-left text-sm font-bold leading-tight">
-                  User
+                  {name ? name : 'User'}
                 </p>
                 <p className="text-left text-sm leading-tight text-dark">
-                  ScreenName
+                  {screenName ? screenName : 'ScreenName'}
                 </p>
               </div>
               <FontAwesomeIcon
@@ -137,8 +167,11 @@ function SideNav() {
             <button className="w-full text-left hover:bg-lightest border-t border-lighter p-3 text-sm">
               Add an existing account
             </button>
-            <button className="w-full text-left hover:bg-lightest border-t border-lighter p-3 text-sm">
-              Log out ScreenName
+            <button
+              className="w-full text-left hover:bg-lightest border-t border-lighter p-3 text-sm"
+              onClick={handleLogout}
+            >
+              Log out {screenName ? screenName : 'ScreenName'}
             </button>
           </div>
         )}

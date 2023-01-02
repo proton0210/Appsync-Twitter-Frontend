@@ -1,15 +1,17 @@
 import React from 'react';
 import { SocialIcon } from 'react-social-icons';
 import { Auth } from 'aws-amplify';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { login, logout, setTwitterProfile } from '../store';
+import { login, logout, setTwitterProfile, setTweets } from '../store';
 import { getMyProfile } from '../lib/backend';
+import { handleSignIn } from '../server-utils/SignIn';
 
 const Login = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  // create a ref for email input
+  const navigate = useNavigate();
+
   const emailRef = React.useRef<HTMLInputElement>(null);
   // Create a useEffect hook to focus on the email input
   React.useEffect(() => {
@@ -19,19 +21,21 @@ const Login = () => {
   }, []);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const handleSignIn = async () => {
-    try {
-      const user = await Auth.signIn(email, password);
-      console.log(user);
-      dispatch(login(user));    
-      dispatch(setTwitterProfile(await getMyProfile()));
+  const twitterProfile = useSelector((state: any) => state.profile);
+  const handleSignInHandler = async () => {
+    const data = await handleSignIn(email, password);
+    if (data) {
+      dispatch(login(data.user));
+      dispatch(setTwitterProfile(data.profile));
+      console.log('timeline', data.timeline.tweets);
+      dispatch(setTweets(data.timeline.tweets));
       navigate('/home');
-    } catch (error: any) {
+    } else {
       dispatch(logout());
-      alert(error.message);
+      alert('Invalid credentials');
     }
   };
+
   return (
     <>
       <div className="w-full mt-5 flex justify-center items-center flex-col p-5 md:p-0">
@@ -62,7 +66,7 @@ const Login = () => {
         <button
           className="w-full md:w-1/3 font-bold rounded-full bg-blue text-white p-3 pl-3 pr-3 hover:bg-darkblue"
           disabled={email.length === 0 || password.length === 0}
-          onClick={handleSignIn}
+          onClick={handleSignInHandler}
         >
           Log in
         </button>
