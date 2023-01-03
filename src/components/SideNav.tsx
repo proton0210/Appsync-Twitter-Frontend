@@ -15,7 +15,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout, clearTwitterProfile } from '../store';
+import { logout } from '../store';
 import { Auth } from 'aws-amplify';
 type TwitterProfile = {
   id?: string;
@@ -83,7 +83,6 @@ function SideNav({ name, screenName, imageUrl }: TwitterProfile) {
     try {
       Auth.signOut();
       dispatch(logout());
-      dispatch(clearTwitterProfile());
       navigate('/');
     } catch (error) {
       console.log('error signing out: ', (error as Error).message);

@@ -3,8 +3,7 @@ import { SocialIcon } from 'react-social-icons';
 import { Auth } from 'aws-amplify';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { login, logout, setTwitterProfile, setTweets } from '../store';
-import { getMyProfile } from '../lib/backend';
+import { login, logout,  } from '../store';
 import { handleSignIn } from '../server-utils/SignIn';
 
 const Login = () => {
@@ -26,9 +25,6 @@ const Login = () => {
     const data = await handleSignIn(email, password);
     if (data) {
       dispatch(login(data.user));
-      dispatch(setTwitterProfile(data.profile));
-      console.log('timeline', data.timeline.tweets);
-      dispatch(setTweets(data.timeline.tweets));
       navigate('/home');
     } else {
       dispatch(logout());

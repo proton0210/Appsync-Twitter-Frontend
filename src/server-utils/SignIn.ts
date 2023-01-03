@@ -9,10 +9,7 @@ export const handleSignIn = async (
 ) => {
   try {
     const user = await Auth.signIn(email, password);
-    const profile = await getMyProfile();
-    const timeline = await getMyTimeline(limit);
-
-    return { user, profile, timeline };
+    return user;
   } catch (error: any) {
     return error.message;
   }

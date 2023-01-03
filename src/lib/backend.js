@@ -2,31 +2,29 @@ import { API } from 'aws-amplify';
 import gql from 'graphql-tag';
 
 const getMyProfile = async () => {
-  const result = await API.graphql(
-    {
-      query: gql`
-        query getMyProfile {
-          getMyProfile {
-            id
-            name
-            screenName
-            imageUrl
-            backgroundImageUrl
-            bio
-            location
-            website
-            birthdate
-            createdAt
-            followersCount
-            followingCount
-            tweetsCount
-            likesCounts
-          }
+  const result = await API.graphql({
+    query: gql`
+      query getMyProfile {
+        getMyProfile {
+          id
+          name
+          screenName
+          imageUrl
+          backgroundImageUrl
+          bio
+          location
+          website
+          birthdate
+          createdAt
+          followersCount
+          followingCount
+          tweetsCount
+          likesCounts
         }
-      `,
-      authMode: 'AMAZON_COGNITO_USER_POOLS'
-    }
-  );
+      }
+    `,
+    authMode: 'AMAZON_COGNITO_USER_POOLS'
+  });
   const profile = result.data.getMyProfile;
 
   profile.imageUrl = profile.imageUrl || 'default_profile.png';
@@ -62,7 +60,7 @@ const getProfileByScreenName = async (screenName) => {
     },
     authMode: 'AMAZON_COGNITO_USER_POOLS'
   });
-  const profile = result.data.getProfile || {};
+  const profile = result.data.getProfile;
 
   profile.imageUrl = profile.imageUrl || 'default_profile.png';
   return profile;
@@ -186,20 +184,49 @@ const getTweets = async (userId, limit, nextToken) => {
         getTweets(userId: $userId, limit: $limit, nextToken: $nextToken) {
           nextToken
           tweets {
-            ... on Tweet {
+            __typename
+            id
+            profile {
               id
-              createdAt
+              name
+              screenName
+              imageUrl
+            }
+            createdAt
+            ... on Tweet {
               text
               liked
               likes
               retweeted
               retweets
               replies
-              profile {
+            }
+            ... on Retweet {
+              retweetOf {
                 id
-                name
-                screenName
-                imageUrl
+                profile {
+                  id
+                  name
+                  screenName
+                  imageUrl
+                }
+                createdAt
+                ... on Tweet {
+                  text
+                  liked
+                  likes
+                  retweeted
+                  retweets
+                  replies
+                }
+                ... on Reply {
+                  text
+                  liked
+                  likes
+                  retweeted
+                  retweets
+                  replies
+                }
               }
             }
             ... on Reply {
@@ -511,390 +538,6 @@ const getFollowing = async (userId, limit = 10) => {
   return result.data.getFollowing;
 };
 
-const search = async (query, mode, limit, nextToken) => {
-  const result = await API.graphql({
-    query: gql`
-      query search(
-        $query: String!
-        $mode: SearchMode!
-        $limit: Int!
-        $nextToken: String
-      ) {
-        search(
-          query: $query
-          mode: $mode
-          limit: $limit
-          nextToken: $nextToken
-        ) {
-          nextToken
-          results {
-            __typename
-            ... on Tweet {
-              id
-              createdAt
-              text
-              liked
-              likes
-              retweeted
-              retweets
-              replies
-              profile {
-                id
-                name
-                screenName
-                imageUrl
-              }
-            }
-            ... on Reply {
-              id
-              text
-              liked
-              likes
-              retweeted
-              retweets
-              replies
-              profile {
-                id
-                name
-                screenName
-                imageUrl
-              }
-              inReplyToTweet {
-                id
-                profile {
-                  id
-                  name
-                  screenName
-                  imageUrl
-                }
-                createdAt
-                ... on Tweet {
-                  text
-                  liked
-                  likes
-                  retweeted
-                  retweets
-                  replies
-                }
-                ... on Reply {
-                  text
-                  liked
-                  likes
-                  retweeted
-                  retweets
-                  replies
-                }
-              }
-              inReplyToUsers {
-                id
-                name
-                screenName
-                imageUrl
-              }
-            }
-            ... on OtherProfile {
-              id
-              name
-              screenName
-              imageUrl
-              bio
-              following
-              followedBy
-            }
-            ... on MyProfile {
-              id
-              name
-              screenName
-              imageUrl
-              bio
-            }
-          }
-        }
-      }
-    `,
-    variables: {
-      query,
-      mode,
-      limit,
-      nextToken
-    },
-    authMode: 'AMAZON_COGNITO_USER_POOLS'
-  });
-
-  return result.data.search;
-};
-
-const getHashTag = async (hashTag, mode, limit, nextToken) => {
-  const result = await API.graphql({
-    query: gql`
-      query getHashTag(
-        $hashTag: String!
-        $mode: HashTagMode!
-        $limit: Int!
-        $nextToken: String
-      ) {
-        getHashTag(
-          hashTag: $hashTag
-          mode: $mode
-          limit: $limit
-          nextToken: $nextToken
-        ) {
-          nextToken
-          results {
-            __typename
-            ... on Tweet {
-              id
-              createdAt
-              text
-              liked
-              likes
-              retweeted
-              retweets
-              replies
-              profile {
-                id
-                name
-                screenName
-                imageUrl
-              }
-            }
-            ... on Reply {
-              id
-              text
-              liked
-              likes
-              retweeted
-              retweets
-              replies
-              profile {
-                id
-                name
-                screenName
-                imageUrl
-              }
-              inReplyToTweet {
-                id
-                profile {
-                  id
-                  name
-                  screenName
-                  imageUrl
-                }
-                createdAt
-                ... on Tweet {
-                  text
-                  liked
-                  likes
-                  retweeted
-                  retweets
-                  replies
-                }
-                ... on Reply {
-                  text
-                  liked
-                  likes
-                  retweeted
-                  retweets
-                  replies
-                }
-              }
-              inReplyToUsers {
-                id
-                name
-                screenName
-                imageUrl
-              }
-            }
-            ... on OtherProfile {
-              id
-              name
-              screenName
-              imageUrl
-              bio
-              following
-              followedBy
-            }
-            ... on MyProfile {
-              id
-              name
-              screenName
-              imageUrl
-              bio
-            }
-          }
-        }
-      }
-    `,
-    variables: {
-      hashTag,
-      mode,
-      limit,
-      nextToken
-    },
-    authMode: 'AMAZON_COGNITO_USER_POOLS'
-  });
-
-  return result.data.getHashTag;
-};
-
-const getOnNotifiedSubscription = (userId) => {
-  const onNotified = {
-    query: gql`
-      subscription onNotified($userId: ID!) {
-        onNotified(userId: $userId) {
-          ... on Retweeted {
-            id
-            createdAt
-            retweetedBy
-            tweetId
-            retweetId
-            type
-          }
-          ... on Liked {
-            id
-            createdAt
-            likedBy
-            tweetId
-            type
-          }
-          ... on Mentioned {
-            id
-            createdAt
-            mentionedBy
-            mentionedByTweetId
-            type
-          }
-          ... on Replied {
-            id
-            createdAt
-            repliedBy
-            tweetId
-            replyTweetId
-            type
-          }
-          ... on DMed {
-            id
-            message
-            createdAt
-            otherUserId
-            type
-          }
-        }
-      }
-    `,
-    variables: {
-      userId: userId
-    }
-  };
-
-  return API.graphql(onNotified);
-};
-
-const listConversations = async (limit, nextToken) => {
-  const result = await API.graphql({
-    query: gql`
-      query listConversations($limit: Int!, $nextToken: String) {
-        listConversations(limit: $limit, nextToken: $nextToken) {
-          conversations {
-            id
-            otherUser {
-              id
-              name
-              screenName
-              imageUrl
-              backgroundImageUrl
-              bio
-              location
-              website
-              birthdate
-              createdAt
-              followersCount
-              followingCount
-              tweetsCount
-              likesCounts
-              following
-              followedBy
-            }
-            lastMessage
-            lastModified
-          }
-          nextToken
-        }
-      }
-    `,
-    variables: {
-      limit,
-      nextToken
-    },
-    authMode: 'AMAZON_COGNITO_USER_POOLS'
-  });
-
-  return result.data.listConversations;
-};
-
-const getDirectMessages = async (otherUserId, limit, nextToken) => {
-  const result = await API.graphql({
-    query: gql`
-      query getDirectMessages(
-        $otherUserId: ID!
-        $limit: Int!
-        $nextToken: String
-      ) {
-        getDirectMessages(
-          otherUserId: $otherUserId
-          limit: $limit
-          nextToken: $nextToken
-        ) {
-          messages {
-            messageId
-            message
-            timestamp
-            from {
-              imageUrl
-              screenName
-            }
-          }
-          nextToken
-        }
-      }
-    `,
-    variables: {
-      otherUserId,
-      limit,
-      nextToken
-    },
-    authMode: 'AMAZON_COGNITO_USER_POOLS'
-  });
-
-  return result.data.getDirectMessages;
-};
-
-const sendDirectMessage = async (message, otherUserId) => {
-  const result = await API.graphql({
-    query: gql`
-      mutation sendDirectMessage($message: String!, $otherUserId: ID!) {
-        sendDirectMessage(message: $message, otherUserId: $otherUserId) {
-          id
-          message: lastMessage
-          lastModified
-          otherUser {
-            name
-            screenName
-            imageUrl
-          }
-        }
-      }
-    `,
-    variables: {
-      message,
-      otherUserId
-    },
-    authMode: 'AMAZON_COGNITO_USER_POOLS'
-  });
-
-  return result.data.sendDirectMessage;
-};
-
 export {
   getMyProfile,
   getProfileByScreenName,
@@ -911,11 +554,5 @@ export {
   follow,
   unfollow,
   getFollowers,
-  getFollowing,
-  search,
-  getHashTag,
-  getOnNotifiedSubscription,
-  listConversations,
-  getDirectMessages,
-  sendDirectMessage
+  getFollowing
 };

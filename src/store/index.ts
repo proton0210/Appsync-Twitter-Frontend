@@ -1,12 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { login, logout, setSignUpStep } from './slices/AuthSlice';
 
-import TwitterProfileSlice, {
-  setTwitterProfile,
-  clearTwitterProfile,
-  setTweets,
-  createTweet
-} from './slices/TwitterProfileSlice';
+import TwitterProfileSlice from './slices/TwitterProfileSlice';
 import AuthSlice from './slices/AuthSlice';
 
 const store = configureStore({
@@ -16,13 +11,4 @@ const store = configureStore({
   }
 });
 
-export {
-  login,
-  logout,
-  setSignUpStep,
-  setTwitterProfile,
-  clearTwitterProfile,
-  setTweets,
-  createTweet,
-  store
-};
+export { login, logout, setSignUpStep, store };
