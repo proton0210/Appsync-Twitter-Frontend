@@ -6,9 +6,8 @@ import routes from './routes';
 import { useSelector } from 'react-redux';
 
 export default function App() {
-  const { loggedIn, user } = useSelector((state: any) => state.auth);
-  console.log('loggedIn', loggedIn);
-  console.log('user', user);
+  const { loggedIn } = useSelector((state: any) => state.auth);
+
   const routing = useRoutes(routes(loggedIn));
 
   return <>{routing}</>;

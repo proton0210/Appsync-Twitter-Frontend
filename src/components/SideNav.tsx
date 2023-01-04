@@ -14,7 +14,7 @@ import {
   faAngleDown
 } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logout } from '../store';
 import { Auth } from 'aws-amplify';
 type TwitterProfile = {
@@ -149,6 +149,7 @@ function SideNav({ name, screenName, imageUrl }: TwitterProfile) {
               <img
                 src={imageUrl ? imageUrl : require('../assets/default.png')}
                 className="w-10 h-10 rounded-full"
+                alt="ProfileImage"
               />
               <div className="ml-4">
                 <p className="text-left text-sm font-bold leading-tight">
