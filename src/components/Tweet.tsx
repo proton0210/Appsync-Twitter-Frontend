@@ -14,6 +14,8 @@ import {
 } from '../server-utils/retweetOperation';
 
 import { likedTweet, unlikedTweet } from '../server-utils/likeOperation';
+
+import timeago from '../server-utils/timeago';
 type Tweet = {
   id?: string;
   profile?: {
@@ -56,7 +58,6 @@ function Tweet({ tweet }: { tweet: any }) {
     }
   };
 
-  let timeago = '';
   return (
     <>
       {tweet.profile && (
@@ -77,7 +78,7 @@ function Tweet({ tweet }: { tweet: any }) {
               </p>
               <p className="text-sm text-dark ml-2">·</p>
               <p className="text-sm text-dark ml-2">
-                {tweet.createdAt || timeago}
+                {timeago(tweet.createdAt)}
               </p>
               <FontAwesomeIcon
                 icon={faAngleDown}
