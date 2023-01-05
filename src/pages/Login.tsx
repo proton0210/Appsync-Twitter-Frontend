@@ -1,6 +1,5 @@
 import React from 'react';
 import { SocialIcon } from 'react-social-icons';
-import { Auth } from 'aws-amplify';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { login, logout,  } from '../store';

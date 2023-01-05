@@ -1,7 +1,7 @@
 import React from 'react';
 import { useProfile } from '../server-utils/fetchProfile';
 import { useTimeline } from '../server-utils/fetchTimeline';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setTwitterProfile, setTimeLine } from '../store';
 import SideNav from '../components/SideNav';
 import RightNav from '../components/RightNav';
@@ -25,21 +25,12 @@ function Home() {
   const timeline = useTimeline();
   const addTweet = useMutation(createTweet);
   const queryClient = useQueryClient();
-
-  let tweets: string[] = [];
+  const tweets = useSelector((state: any) => state.timeLine.tweets);
 
   const [tweet, setTweet] = React.useState('');
 
   if (profile.isLoading || timeline.isLoading) return <div>Loading...</div>;
   if (profile.isError || timeline.isError) return <div>Error</div>;
-
-  if (profile.isSuccess) {
-    dispatch(setTwitterProfile(profile.data));
-  }
-  if (timeline.isSuccess) {
-    tweets = timeline.data.tweets;
-    dispatch(setTimeLine(timeline.data));
-  }
 
   const handleCreateTweet = async () => {
     try {

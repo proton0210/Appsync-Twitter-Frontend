@@ -44,27 +44,32 @@ const tabs = [
   {
     icon: <FontAwesomeIcon icon={faHashtag} />,
     title: 'Explore',
-    id: 'explore'
+    id: 'explore',
+    target: 'Explore'
   },
   {
     icon: <FontAwesomeIcon icon={faBell} />,
     title: 'Notifications',
-    id: 'notifications'
+    id: 'notifications',
+    target: 'Notifications'
   },
   {
     icon: <FontAwesomeIcon icon={faEnvelope} />,
     title: 'Messages',
-    id: 'messages'
+    id: 'messages',
+    target: 'Messages'
   },
   {
     icon: <FontAwesomeIcon icon={faBookmark} />,
     title: 'Bookmarks',
-    id: 'bookmarks'
+    id: 'bookmarks',
+    target: 'Bookmarks'
   },
   {
     icon: <FontAwesomeIcon icon={faClipboardList} />,
     title: 'Lists',
-    id: 'lists'
+    id: 'lists',
+    target: 'Lists'
   },
   {
     icon: <FontAwesomeIcon icon={faUser} />,
@@ -72,7 +77,12 @@ const tabs = [
     id: 'profile',
     target: 'Profile'
   },
-  { icon: <FontAwesomeIcon icon={faEllipsisH} />, title: 'More', id: 'more' }
+  {
+    icon: <FontAwesomeIcon icon={faEllipsisH} />,
+    title: 'More',
+    id: 'more',
+    target: 'More'
+  }
 ];
 function SideNav({ name, screenName, imageUrl }: TwitterProfile) {
   let navigate = useNavigate();

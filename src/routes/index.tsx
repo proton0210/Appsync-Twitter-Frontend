@@ -3,6 +3,7 @@ import Root from '../pages/Root';
 import Home from '../pages/Home';
 import { Navigate } from 'react-router-dom';
 import React from 'react';
+import Profile from '../pages/Profile';
 const routes = (isLoggedIn: boolean) => [
   {
     path: '/',
@@ -11,6 +12,10 @@ const routes = (isLoggedIn: boolean) => [
   {
     path: '/home',
     element: isLoggedIn ? <Home /> : <Navigate to="/login" />
+  },
+  {
+    path: '/Profile',
+    element: isLoggedIn ? <Profile /> : <Navigate to="/login" />
   },
   {
     path: '/login',

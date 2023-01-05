@@ -7,7 +7,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-
+import ReplyOverlay from './ReplyOverlay';
 import {
   retweetedTweet,
   unretweetedTweet
@@ -36,6 +36,10 @@ type Tweet = {
 function Tweet({ tweet }: { tweet: any }) {
   const [isLiked, setIsLiked] = React.useState(tweet.liked);
   const [isRetweeted, setIsRetweeted] = React.useState(tweet.retweeted);
+  const [showReplyOverlay, setShowReplyOverlay] = React.useState(false);
+  const replyToTweet = () => {
+    setShowReplyOverlay((prev) => !prev);
+  };
 
   const handleLike = async () => {
     console.log(' clicked isLiked', isLiked);
@@ -85,10 +89,21 @@ function Tweet({ tweet }: { tweet: any }) {
                 className="fas fa-angle-down text-sm ml-auto text-dark"
               />
             </div>
+            {tweet.inReplyToUsers && tweet.inReplyToUsers.length > 0 && (
+              <p className="text-dark text-xs md:text-sm">
+                Replying to{' '}
+                {tweet.inReplyToUsers
+                  .map((x: any) => `@${x.screenName}`)
+                  .join(',')}
+              </p>
+            )}
             <p className="pb-2">{tweet.text}</p>
             <div className="flex w-full">
               <div className="flex items-center text-sm text-dark w-1/4">
-                <button className="mr-2 rounded-full hover:bg-lighter">
+                <button
+                  className="mr-2 rounded-full hover:bg-lighter"
+                  onClick={replyToTweet}
+                >
                   <FontAwesomeIcon
                     icon={faComment}
                     className="far fa-comment"
@@ -130,6 +145,11 @@ function Tweet({ tweet }: { tweet: any }) {
               </div>
             </div>
           </div>
+          <ReplyOverlay
+            tweet={tweet}
+            setShowReplyOverlay={replyToTweet}
+            showReplyOverlay={showReplyOverlay}
+          />
         </div>
       )}
     </>
