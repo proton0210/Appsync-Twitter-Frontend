@@ -2,7 +2,7 @@ import React from 'react';
 import { SocialIcon } from 'react-social-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { login, logout,  } from '../store';
+import { login, logout } from '../store';
 import { handleSignIn } from '../server-utils/SignIn';
 
 const Login = () => {
@@ -23,7 +23,7 @@ const Login = () => {
   const handleSignInHandler = async () => {
     const data = await handleSignIn(email, password);
     if (data) {
-      dispatch(login(data.user));
+      dispatch(login(data));
       navigate('/home');
     } else {
       dispatch(logout());

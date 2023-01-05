@@ -4,7 +4,7 @@ const AuthSlice = createSlice({
   name: 'auth',
   initialState: {
     loggedIn: false,
-    user: null,
+    user: '',
     signUpStep: 0
   },
   reducers: {
@@ -14,7 +14,7 @@ const AuthSlice = createSlice({
     },
     logout: (state) => {
       state.loggedIn = false;
-      state.user = null;
+      state.user = '';
     },
     setSignUpStep: (state, action) => {
       state.signUpStep = action.payload;

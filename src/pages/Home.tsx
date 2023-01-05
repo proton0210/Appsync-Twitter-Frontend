@@ -1,8 +1,7 @@
 import React from 'react';
 import { useProfile } from '../server-utils/fetchProfile';
 import { useTimeline } from '../server-utils/fetchTimeline';
-import { useDispatch, useSelector } from 'react-redux';
-import { setTwitterProfile, setTimeLine } from '../store';
+import {  useSelector } from 'react-redux';
 import SideNav from '../components/SideNav';
 import RightNav from '../components/RightNav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,7 +19,6 @@ import { useMutation, useQueryClient } from 'react-query';
 import { createTweet } from '../server-utils/createTweet';
 
 function Home() {
-  const dispatch = useDispatch();
   const profile = useProfile();
   const timeline = useTimeline();
   const addTweet = useMutation(createTweet);
