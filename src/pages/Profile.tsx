@@ -12,12 +12,16 @@ import {
   faLink,
   faM,
   faMapMarker,
-  faMapMarkerAlt
+  faMapMarkerAlt,
+  faPlus
 } from '@fortawesome/free-solid-svg-icons';
+import Tweets from '../components/Tweets';
 
 function Profile() {
   const profile = useSelector((state: any) => state.profile);
   const user = useSelector((state: any) => state.auth.user);
+  const tweets = useSelector((state: any) => state.timeLine.tweets);
+  console.log('Tweets: ', tweets);
   const isSelf = user.username === profile.id;
   const joinedDate = timeago(profile.createdAt);
   const [followingLabel, setFollowingLabel] = React.useState('Following');
@@ -169,7 +173,40 @@ function Profile() {
                 </button>
               </div>
             </div>
+            <div className="flex flex-row justify-evenly mt-2">
+              <button className="text-dark font-bold border-b-2 border-blue px-10 py-4 hover:bg-lightblue">
+                Tweets
+              </button>
+              <button className="text-dark font-bold border-b-2 px-10 py-4 hover:bg-lightblue">
+                Tweets & replies
+              </button>
+              <button className="text-dark font-bold border-b-2 px-10 py-4 hover:bg-lightblue">
+                Media
+              </button>
+              <button className="text-dark font-bold border-b-2 px-10 py-4 hover:bg-lightblue">
+                Like
+              </button>
+            </div>
           </div>
+
+          {/* <!-- tweets --> */}
+          {tweets.length === 0 && (
+            <div className="flex flex-col items-center justify-center w-full pt-10">
+              <p className="font-bold text-lg">You haven’t Tweeted yet</p>
+              <p className="text-sm text-dark">
+                When you post a Tweet, it’ll show up here.
+              </p>
+              <button className="text-white bg-blue rounded-full font-semibold mt-4 px-4 py-2 hover:bg-darkblue">
+                <p className="hidden lg:block">Tweet now</p>
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  className="fas fa-plus lg:hidden"
+                ></FontAwesomeIcon>
+              </button>
+            </div>
+          )}
+
+          <Tweets />
         </div>
 
         <div className="hidden md:block w-1/3 z-0 h-full border-l border-lighter px-6 py-2 overflow-y-scroll relative">
