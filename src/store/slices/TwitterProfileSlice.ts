@@ -34,9 +34,19 @@ const twitterProfile = createSlice({
       state.followingCount = action.payload.followingCount;
       state.tweetsCount = action.payload.tweetsCount;
       state.likesCounts = action.payload.likesCounts;
+    },
+    getImageUploadUrl: (state, action) => {
+      state.imageUrl = action.payload.imageUrl;
+    },
+    editMyProfile: (state, action) => {
+      state.name = action.payload.name || state.name;
+      state.screenName = action.payload.screenName || state.screenName;
+      state.bio = action.payload.bio || state.bio;
+      
+   
     }
   }
 });
 
 export default twitterProfile.reducer;
-export const { setTwitterProfile} = twitterProfile.actions;
+export const { setTwitterProfile,getImageUploadUrl,editMyProfile } = twitterProfile.actions;
