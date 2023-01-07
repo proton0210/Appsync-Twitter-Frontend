@@ -16,7 +16,9 @@ import {
   faPlus
 } from '@fortawesome/free-solid-svg-icons';
 import Tweets from '../components/Tweets';
+
 import SetUpProfileOverlay from '../components/SetUpProfileOverlay';
+import EditProfileOverlay from '../components/EditProfileOverlay';
 function Profile() {
   const profile = useSelector((state: any) => state.profile);
   const user = useSelector((state: any) => state.auth.user);
@@ -26,6 +28,7 @@ function Profile() {
   const joinedDate = timeago(profile.createdAt);
   const [followingLabel, setFollowingLabel] = React.useState('Following');
   const [showSetUpProfile, setShowSetUpProfile] = React.useState(false);
+  const [editProfileModal, setEditProfileModal] = React.useState(false);
 
   const setUpProfile = () => {
     setShowSetUpProfile(true);
@@ -34,7 +37,11 @@ function Profile() {
   return (
     <div className="flex container h-screen w-full">
       <div className="flex container h-screen w-full">
-        <SideNav />
+        <SideNav
+          name={profile.name}
+          screenName={profile.screenName}
+          imageUrl={profile.imageUrl}
+        />
 
         <div className="w-1/2 h-full overflow-y-scroll">
           <div className="px-5 py-3 border-b border-lighter flex items-center">
@@ -86,15 +93,19 @@ function Profile() {
                 <div>
                   {profile.imageUrl === null ||
                     (profile.imageUrl === 'default_profile.png' && (
-                      <button className="ml-auto text-blue font-bold px-4 py-2 rounded-full border border-blue mb-2 hover:bg-lightblue"
-                      onClick={setUpProfile}
+                      <button
+                        className="ml-auto text-blue font-bold px-4 py-2 rounded-full border border-blue mb-2 hover:bg-lightblue"
+                        onClick={setUpProfile}
                       >
                         Set up profile
                       </button>
                     ))}
                   {profile.imageUrl !== null &&
                     profile.imageUrl !== 'default_profile.png' && (
-                      <button className="ml-auto text-blue font-bold px-4 py-2 rounded-full border border-blue mb-2 hover:bg-lightblue">
+                      <button
+                        className="ml-auto text-blue font-bold px-4 py-2 rounded-full border border-blue mb-2 hover:bg-lightblue"
+                        onClick={() => setEditProfileModal(true)}
+                      >
                         Edit profile
                       </button>
                     )}
@@ -222,6 +233,10 @@ function Profile() {
 
         {showSetUpProfile && (
           <SetUpProfileOverlay setShowSetUpProfile={setShowSetUpProfile} />
+        )}
+
+        {editProfileModal && (
+          <EditProfileOverlay setEditProfileModal={setEditProfileModal} />
         )}
       </div>
     </div>
