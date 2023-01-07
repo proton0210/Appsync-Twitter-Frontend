@@ -10,8 +10,6 @@ import {
   faEllipsisH,
   faEnvelope,
   faLink,
-  faM,
-  faMapMarker,
   faMapMarkerAlt,
   faPlus
 } from '@fortawesome/free-solid-svg-icons';
