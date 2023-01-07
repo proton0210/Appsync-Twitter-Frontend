@@ -21,7 +21,6 @@ function Profile() {
   const profile = useSelector((state: any) => state.profile);
   const user = useSelector((state: any) => state.auth.user);
   const tweets = useSelector((state: any) => state.timeLine.tweets);
-  console.log('Tweets: ', tweets);
   const isSelf = user.username === profile.id;
   const joinedDate = timeago(profile.createdAt);
   const [followingLabel, setFollowingLabel] = React.useState('Following');
