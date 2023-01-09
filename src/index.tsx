@@ -6,9 +6,10 @@ import { Amplify } from 'aws-amplify';
 import awsExports from './aws-config';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from './store';
+import { store, persistor } from './store';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { PersistGate } from 'redux-persist/integration/react';
 Amplify.configure(awsExports);
 
 const root = ReactDOM.createRoot(
@@ -19,10 +20,12 @@ root.render(
   <Router>
     <React.Suspense fallback={<div>Loading...</div>}>
       <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <App />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <QueryClientProvider client={queryClient}>
+            <App />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+        </PersistGate>
       </Provider>
     </React.Suspense>
   </Router>

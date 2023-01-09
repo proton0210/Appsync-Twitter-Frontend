@@ -14,7 +14,7 @@ const routes = (isLoggedIn: boolean) => [
     element: isLoggedIn ? <Home /> : <Navigate to="/login" />
   },
   {
-    path: '/Profile',
+    path: '/:screenName',
     element: isLoggedIn ? <Profile /> : <Navigate to="/login" />
   },
   {

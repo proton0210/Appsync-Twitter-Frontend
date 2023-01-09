@@ -72,12 +72,6 @@ const tabs = [
     target: 'Lists'
   },
   {
-    icon: <FontAwesomeIcon icon={faUser} />,
-    title: 'Profile',
-    id: 'profile',
-    target: 'Profile'
-  },
-  {
     icon: <FontAwesomeIcon icon={faEllipsisH} />,
     title: 'More',
     id: 'more',
@@ -121,6 +115,22 @@ function SideNav({ name, screenName, imageUrl }: TwitterProfile) {
               </button>
             );
           })}
+
+          <button
+            key={'profileButton'}
+            className="focus:outline-none hover:text-blue flex items-center px-4 py-2 hover:bg-lightblue rounded-full mr-auto mb-3"
+            onClick={() => {
+              navigate(`/${screenName}`);
+            }}
+          >
+            <FontAwesomeIcon
+              icon={faUser}
+              className="text-2xl mr-4"
+            ></FontAwesomeIcon>
+            <p className="text-lg font-semibold text-left hidden lg:block">
+              Profile
+            </p>
+          </button>
         </div>
         <button className="text-white bg-blue rounded-full font-semibold h-12 lg:h-auto w-20 lg:w-full p-3 hover:bg-darkblue">
           <p className="hidden lg:block">Tweet</p>

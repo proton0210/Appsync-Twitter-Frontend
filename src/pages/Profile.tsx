@@ -1,9 +1,11 @@
 import React from 'react';
 import SideNav from '../components/SideNav';
 import SearchBar from '../components/SearchBar';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import timeago from '../server-utils/timeago';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Auth } from 'aws-amplify';
+import { login } from '../store';
 import {
   faArrowLeft,
   faCalendar,
@@ -17,7 +19,18 @@ import Tweets from '../components/Tweets';
 
 import SetUpProfileOverlay from '../components/SetUpProfileOverlay';
 import EditProfileOverlay from '../components/EditProfileOverlay';
+import { Navigate, useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 function Profile() {
+  const dispatch = useDispatch();
+
+  const { loggedIn } = useSelector((state: any) => state.auth);
+
+
+  console.log('Profile Page loggedIn', loggedIn);
+  const { screenName } = useParams();
+  console.log(screenName);
+
   const profile = useSelector((state: any) => state.profile);
   const user = useSelector((state: any) => state.auth.user);
   const tweets = useSelector((state: any) => state.timeLine.tweets);

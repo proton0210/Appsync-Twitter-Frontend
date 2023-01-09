@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { login, logout } from '../store';
 import { handleSignIn } from '../server-utils/SignIn';
-
 const Login = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -20,9 +19,11 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const twitterProfile = useSelector((state: any) => state.profile);
+
   const handleSignInHandler = async () => {
     const data = await handleSignIn(email, password);
     if (data) {
+      console.log(data);
       dispatch(login(data));
       navigate('/home');
     } else {
