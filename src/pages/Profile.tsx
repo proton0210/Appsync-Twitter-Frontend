@@ -4,8 +4,7 @@ import SearchBar from '../components/SearchBar';
 import { useSelector, useDispatch } from 'react-redux';
 import timeago from '../server-utils/timeago';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Auth } from 'aws-amplify';
-import { login } from '../store';
+import { useQueryClient } from 'react-query';
 import {
   faArrowLeft,
   faCalendar,
@@ -19,22 +18,25 @@ import Tweets from '../components/Tweets';
 
 import SetUpProfileOverlay from '../components/SetUpProfileOverlay';
 import EditProfileOverlay from '../components/EditProfileOverlay';
-import { Navigate, useParams } from 'react-router';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router';
+import { useProfileByScreenName } from '../server-utils/fetchProfileByScreenName';
+import { useOtherTweets } from '../server-utils/getUsersTweets';
+import { followUser, unFollowUser } from '../server-utils/FollowOperations';
+import { useNavigate } from 'react-router';
+
 function Profile() {
-  const dispatch = useDispatch();
-
-  const { loggedIn } = useSelector((state: any) => state.auth);
-
-
-  console.log('Profile Page loggedIn', loggedIn);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { screenName } = useParams();
-  console.log(screenName);
 
-  const profile = useSelector((state: any) => state.profile);
+  const profileData = useProfileByScreenName(screenName);
+  const profile = useSelector((state: any) => state.otherProfile.profile);
+  const otherTweets = useOtherTweets(profile.id, profileData.data);
+
   const user = useSelector((state: any) => state.auth.user);
-  const tweets = useSelector((state: any) => state.timeLine.tweets);
+  const tweets = useSelector((state: any) => state.otherProfile.tweets.tweets);
   const isSelf = user.username === profile.id;
+
   const joinedDate = timeago(profile.createdAt);
   const [followingLabel, setFollowingLabel] = React.useState('Following');
   const [showSetUpProfile, setShowSetUpProfile] = React.useState(false);
@@ -43,21 +45,49 @@ function Profile() {
   const setUpProfile = () => {
     setShowSetUpProfile(true);
   };
+  const goToFollowersPage = () => {
+    return navigate(`/${profile.screenName}/followers`);
+  };
+  const goToFollowingPage = () => {
+    return navigate(`/${profile.screenName}/following`);
+  };
+
+  const gotoHome = () => {
+    return navigate('/home');
+  };
+
+  const handleFollowUser = async (profileId: string) => {
+    try {
+      const res = await followUser(profileId);
+      profile.following = true;
+      profile.followersCount = profile.followersCount + 1;
+      queryClient.refetchQueries('getOtherProfile');
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
+
+  const handleUnFollowUser = async (profileId: string) => {
+    try {
+      const res = await unFollowUser(profileId);
+      profile.following = false;
+      profile.followersCount = profile.followersCount - 1;
+      queryClient.refetchQueries('getOtherProfile');
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="flex container h-screen w-full">
       <div className="flex container h-screen w-full">
-        <SideNav
-          name={profile.name}
-          screenName={profile.screenName}
-          imageUrl={profile.imageUrl}
-        />
+        <SideNav />
 
         <div className="w-1/2 h-full overflow-y-scroll">
           <div className="px-5 py-3 border-b border-lighter flex items-center">
             <button
               className="rounded-full p-3 px-4 focus:outline-none hover:bg-lightblue"
-              onClick={() => window.history.back()}
+              onClick={gotoHome}
             >
               <FontAwesomeIcon
                 icon={faArrowLeft}
@@ -136,8 +166,11 @@ function Profile() {
                       className="fas fa-envelope"
                     ></FontAwesomeIcon>
                   </button>
-                  {!profile.isFollowing && (
-                    <button className="ml-auto text-blue font-bold px-4 py-2 rounded-full border border-blue mb-2 hover:bg-lightblue">
+                  {!profile.following && (
+                    <button
+                      className="ml-auto text-blue font-bold px-4 py-2 rounded-full border border-blue mb-2 hover:bg-lightblue"
+                      onClick={() => handleFollowUser(user.username)}
+                    >
                       Follow
                     </button>
                   )}
@@ -145,6 +178,7 @@ function Profile() {
                     <button
                       onMouseOver={() => setFollowingLabel('Unfollow')}
                       onMouseLeave={() => setFollowingLabel('Following')}
+                      onClick={() => handleUnFollowUser(user.username)}
                       className="ml-auto text-white bg-blue font-bold px-4 py-2 rounded-full border mb-2 hover:bg-red-700"
                     >
                       {followingLabel}
@@ -191,11 +225,17 @@ function Profile() {
                 <p className="text-dark">Joined {joinedDate}</p>
               </div>
               <div className="flex flex-row mt-1">
-                <button className="mr-4 flex flex-row hover:underline">
+                <button
+                  className="mr-4 flex flex-row hover:underline"
+                  onClick={goToFollowingPage}
+                >
                   <span className="font-bold">{profile.followingCount}</span>
                   <span className="text-dark whitespace-pre"> Following</span>
                 </button>
-                <button className="flex flex-row hover:underline">
+                <button
+                  className="flex flex-row hover:underline"
+                  onClick={goToFollowersPage}
+                >
                   <span className="font-bold">{profile.followersCount}</span>
                   <span className="text-dark whitespace-pre"> Followers</span>
                 </button>
@@ -234,7 +274,7 @@ function Profile() {
             </div>
           )}
 
-          <Tweets />
+          <Tweets tweets={tweets} />
         </div>
 
         <div className="hidden md:block w-1/3 z-0 h-full border-l border-lighter px-6 py-2 overflow-y-scroll relative">

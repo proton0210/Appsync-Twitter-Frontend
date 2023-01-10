@@ -1,7 +1,7 @@
 import React from 'react';
 import { useProfile } from '../server-utils/fetchProfile';
 import { useTimeline } from '../server-utils/fetchTimeline';
-import {  useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import SideNav from '../components/SideNav';
 import RightNav from '../components/RightNav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -47,11 +47,7 @@ function Home() {
   return (
     <>
       <main className="flex container h-screen w-full">
-        <SideNav
-          name={profile.data.name}
-          screenName={profile.data.screenName}
-          imageUrl={profile.data.imageUrl}
-        />
+        <SideNav />
         <section className="w-full md:w-1/2 h-full overflow-y-scroll">
           <div className="px-5 py-3 border-b border-lighter flex items-center justify-between">
             <h1 className="text-xl font-bold">Home</h1>
@@ -125,7 +121,7 @@ function Home() {
             </div>
           )}
 
-          <Tweets />
+          <Tweets tweets={tweets} />
         </section>
 
         <RightNav />

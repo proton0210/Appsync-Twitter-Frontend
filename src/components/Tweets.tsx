@@ -3,8 +3,10 @@ import { useSelector } from 'react-redux';
 import Retweet from './Retweet';
 import Tweet from './Tweet';
 
-function Tweets() {
-  const { tweets } = useSelector((state: any) => state.timeLine);
+interface TweetsProps {
+  otherProfile?: boolean;
+}
+function Tweets({ tweets }: { tweets: any }) {
   return (
     <div>
       {tweets.map((tweet: any) => {

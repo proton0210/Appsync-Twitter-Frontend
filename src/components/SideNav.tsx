@@ -13,6 +13,7 @@ import {
   faCheck,
   faAngleDown
 } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../store';
@@ -78,8 +79,11 @@ const tabs = [
     target: 'More'
   }
 ];
-function SideNav({ name, screenName, imageUrl }: TwitterProfile) {
+function SideNav() {
   let navigate = useNavigate();
+  const { name, screenName, imageUrl } = useSelector(
+    (state: any) => state.profile
+  );
   const [dropDown, setDropDown] = React.useState(false);
 
   const dispatch = useDispatch();

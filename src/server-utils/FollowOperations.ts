@@ -1,4 +1,4 @@
-import { follow, unfollow } from '../lib/backend';
+import { follow, unfollow, getFollowers, getFollowing } from '../lib/backend';
 
 export const followUser = async (userId: string) => {
   try {
@@ -9,7 +9,17 @@ export const followUser = async (userId: string) => {
   }
 };
 
-export const unfollowUser = async (userId: string) => {
+export const unFollowUser = async (userId: string) => {
   const response = await unfollow(userId);
+  return response;
+};
+
+export const getFollowersList = async (userId: string) => {
+  const response = await getFollowers(userId);
+  return response;
+};
+
+export const getFollowingList = async (userId: string) => {
+  const response = await getFollowing(userId);
   return response;
 };
