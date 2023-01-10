@@ -44,6 +44,9 @@ function Home() {
     }
   };
 
+  // Implement infinite  scroll
+  // TODO : https://ui.dev/c/react-query/infinite-queries
+
   return (
     <>
       <main className="flex container h-screen w-full">

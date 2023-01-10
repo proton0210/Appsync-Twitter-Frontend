@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const timeLine = createSlice({
   name: 'timeLine',
   initialState: {
-    nextToken: '' || null,
+    nextToken: '',
     tweets: []
   },
   reducers: {
