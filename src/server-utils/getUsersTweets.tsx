@@ -12,7 +12,6 @@ export const useOtherTweets = (userId: any, profileDataQueryData: any) => {
   const dispatch = useDispatch();
   return useQuery('getOtherTweets', () => getOtherTweets(userId), {
     onSuccess: (data) => {
-      console.log('data:-- ', data);
       dispatch(setOtherTimeLine(data));
     },
     enabled: !!profileDataQueryData
