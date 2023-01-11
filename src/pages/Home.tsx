@@ -29,11 +29,11 @@ function Home() {
   const nextToken = useSelector((state: any) => state.timeLine.nextToken);
   const user = useSelector((state: any) => state.profile);
   const [tweet, setTweet] = React.useState('');
-  const TweetsQuery = useInfiniteTweets(user.id, 10, nextToken);
+  // const TweetsQuery = useInfiniteTweets(user.id, 10, nextToken);
   if (profile.isLoading || timeline.isLoading) return <div>Loading...</div>;
   if (profile.isError || timeline.isError) return <div>Error</div>;
-  if (TweetsQuery.isLoading) return <div>Loading...</div>;
-  if (TweetsQuery.isError) return <div>Error</div>;
+  // if (TweetsQuery.isLoading) return <div>Loading...</div>;
+  // if (TweetsQuery.isError) return <div>Error</div>;
 
   const handleCreateTweet = async () => {
     try {
@@ -51,8 +51,6 @@ function Home() {
 
   useScrollToBottomAction(document, () => {
     console.log('Scroll to bottom action fired');
-    const res =TweetsQuery.fetchNextPage();
-    console.log('res', res);
   });
 
   // Implement infinite  scroll
