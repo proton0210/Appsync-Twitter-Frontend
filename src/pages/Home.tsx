@@ -17,18 +17,23 @@ import Tweets from '../components/Tweets';
 
 import { useMutation, useQueryClient } from 'react-query';
 import { createTweet } from '../server-utils/createTweet';
+import { useScrollToBottomAction } from '../server-utils/scrollToBottom';
+import { useInfiniteTweets, getTweetsQuery } from '../server-utils/getTweets';
 
 function Home() {
   const profile = useProfile();
   const timeline = useTimeline();
   const addTweet = useMutation(createTweet);
   const queryClient = useQueryClient();
-  const tweets = useSelector((state: any) => state.timeLine.tweets);
-
+  let tweets = useSelector((state: any) => state.timeLine.tweets);
+  const nextToken = useSelector((state: any) => state.timeLine.nextToken);
+  const user = useSelector((state: any) => state.profile);
   const [tweet, setTweet] = React.useState('');
-
+  const TweetsQuery = useInfiniteTweets(user.id, 10, nextToken);
   if (profile.isLoading || timeline.isLoading) return <div>Loading...</div>;
   if (profile.isError || timeline.isError) return <div>Error</div>;
+  if (TweetsQuery.isLoading) return <div>Loading...</div>;
+  if (TweetsQuery.isError) return <div>Error</div>;
 
   const handleCreateTweet = async () => {
     try {
@@ -44,8 +49,15 @@ function Home() {
     }
   };
 
+  useScrollToBottomAction(document, () => {
+    console.log('Scroll to bottom action fired');
+    const res =TweetsQuery.fetchNextPage();
+    console.log('res', res);
+  });
+
   // Implement infinite  scroll
   // TODO : https://ui.dev/c/react-query/infinite-queries
+  // useScrollToBottomAction(document);
 
   return (
     <>

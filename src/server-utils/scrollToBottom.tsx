@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRef, useEffect } from 'react';
 
-function useScrollToBottomAction(container: any, callback: any, offset = 0) {
+export function useScrollToBottomAction(container: any, callback: any, offset = 0) {
   const callbackRef = useRef(callback);
 
   useEffect(() => {
