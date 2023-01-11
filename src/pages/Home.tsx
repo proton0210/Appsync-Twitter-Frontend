@@ -49,9 +49,9 @@ function Home() {
     }
   };
 
-  useScrollToBottomAction(document, () => {
-    console.log('Scroll to bottom action fired');
-  });
+  // useScrollToBottomAction(document, () => {
+  //   console.log('Scroll to bottom action fired');
+  // });
 
   // Implement infinite  scroll
   // TODO : https://ui.dev/c/react-query/infinite-queries
