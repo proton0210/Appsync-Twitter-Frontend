@@ -3,7 +3,7 @@ const awsconfig = {
   Auth: {
     region: 'us-east-1',
     userPoolId: 'us-east-1_vZOTCWbsV',
-    userPoolWebClientId: '',
+    userPoolWebClientId: '28phh9pturfspb1o75it6rjai8',
     mandatorySignIn: true,
     storage: window.sessionStorage
   },
