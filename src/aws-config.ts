@@ -3,7 +3,7 @@ import {
   REACT_APP_USER_POOL_ID,
   REACT_APP_USER_POOL_CLIENT_ID,
   REACT_APP_APPSYNC_API
-} from './../variables';
+} from './variables';
 // Configure your AWS resources here
 const awsconfig = {
   Auth: {
