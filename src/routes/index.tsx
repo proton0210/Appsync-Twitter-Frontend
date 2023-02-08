@@ -6,6 +6,7 @@ import React from 'react';
 import Profile from '../pages/Profile';
 import Followers from '../pages/Followers';
 import Following from '../pages/Following';
+import Search from '../pages/Search';
 const routes = (isLoggedIn: boolean) => [
   {
     path: '/',
@@ -15,6 +16,11 @@ const routes = (isLoggedIn: boolean) => [
     path: '/home',
     element: isLoggedIn ? <Home /> : <Navigate to="/login" />
   },
+  {
+    path :'/search',
+    element: isLoggedIn ? <Search /> : <Navigate to="/login" />
+
+  }
   {
     path: '/:screenName',
     element: isLoggedIn ? <Profile /> : <Navigate to="/login" />
@@ -31,7 +37,7 @@ const routes = (isLoggedIn: boolean) => [
   {
     path: '/login',
     element: <Login />
-  }
+  },
 ];
 
 export default routes;

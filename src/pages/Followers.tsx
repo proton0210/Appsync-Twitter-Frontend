@@ -1,14 +1,13 @@
-import React from 'react';
-import SideNav from '../components/SideNav';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
-import { getFollowersList } from '../server-utils/FollowOperations';
-import Users from '../components/Users';
-import SearchBar from '../components/SearchBar';
-import { useSelector } from 'react-redux';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useQuery } from 'react-query';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import SearchBar from '../components/SearchBar';
+import SideNav from '../components/SideNav';
+import Users from '../components/Users';
+import { getFollowersList } from '../server-utils/FollowOperations';
+
 function Followers() {
   const navigate = useNavigate();
   const otherProfile = useSelector((state: any) => state.otherProfile.profile);
